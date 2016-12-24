@@ -9,12 +9,23 @@ var session = require('express-session');
 var passport = require('passport');
 var mongo = require('./model/database.js')
 var twilio = require('./model/twilioer.js')
+var googleVision = require("./model/ImageExtractor.js")
 
 var index = require('./routes/index');
 
 var authenticate = require('./model/authenticate.js')
 
 var app = express();
+
+googleVision.getLabels("./advil.png", function(err, labels){
+  if(!err){
+    console.log(labels);
+  }
+  else{
+    console.log(err)
+  }
+})
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

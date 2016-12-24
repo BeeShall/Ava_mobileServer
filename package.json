@@ -19,6 +19,7 @@
     "bcryptjs": "latest",
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
-    "twilio":"*"
+    "twilio":"*",
+    "@google-cloud/vision": "*"
   }
 }
