@@ -20,6 +20,7 @@
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
     "twilio":"*",
-    "@google-cloud/vision": "*"
+    "@google-cloud/vision": "*",
+    "request":"*"
   }
 }

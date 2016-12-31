@@ -15,16 +15,16 @@ var index = require('./routes/index');
 
 var authenticate = require('./model/authenticate.js')
 
+var geoStuffs = require('./model/mapsOperations.js')
+
+geoStuffs.findNerestHospital({lat:28.2297224 , lng: 83.9566183})
+
 var app = express();
 
-googleVision.getLabels("./advil.png", function(err, labels){
-  if(!err){
-    console.log(labels);
-  }
-  else{
-    console.log(err)
-  }
-})
+
+
+
+
 
 
 // view engine setup
@@ -46,6 +46,8 @@ app.use(function(req,res,next){
   req.app.locals.db = mongo;
   req.app.locals.passport = passport;
   req.app.locals.twilio = twilio
+  req.app.locals.googleVision = googleVision;
+  req.app.locals.geoStuffs = geoStuffs;
   next();
 });
 
