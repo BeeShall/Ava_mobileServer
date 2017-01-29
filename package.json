@@ -21,6 +21,7 @@
     "passport-local": "~0.1.6",
     "twilio":"*",
     "@google-cloud/vision": "*",
-    "request":"*"
+    "request":"*",
+    "node-cloud-vision-api":"*"
   }
 }

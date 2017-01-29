@@ -11,13 +11,13 @@ var mongo = require('./model/database.js')
 var twilio = require('./model/twilioer.js')
 var googleVision = require("./model/ImageExtractor.js")
 
+
 var index = require('./routes/index');
 
 var authenticate = require('./model/authenticate.js')
 
 var geoStuffs = require('./model/mapsOperations.js')
 
-geoStuffs.findNerestHospital({lat:28.2297224 , lng: 83.9566183})
 
 var app = express();
 

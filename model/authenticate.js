@@ -44,12 +44,15 @@ exports.setAuthentication = function (passport, db) {
 
 
 
+
     passport.serializeUser(function (username, done) {
         done(null, username);
     });
     passport.deserializeUser(function (username, done) {
         done(null, username);
     });
+
+    
 
 
 

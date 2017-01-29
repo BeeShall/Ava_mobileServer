@@ -43,3 +43,22 @@ exports.getUser = function (username, callBack) {
         }
     })
 }
+
+exports.getEmergencyContacts = function(id, callBack){
+    console.log(id)
+    cursor = db.collection("users").find({
+        "_id": new mongodb.ObjectID(id)
+    });
+    cursor.nextObject(function(err,doc){
+        if(err) {
+            console.log(err)
+            callBack(true)
+        }
+        else{
+            if(doc==null) callBack(true)
+            else{
+                callBack(false, {user: doc['firstName'],contacts: doc["ice"]})
+            }
+        }
+    })
+}
