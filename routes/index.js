@@ -75,42 +75,126 @@ router.post('/signup', function (req, res, next) {
 
 router.post('/addMedication', function (req, res, next) {
 	console.log(req.body)
+	var weekdays = req.body.weekdays.slice(1, req.body.weekdays.length - 1).split(", ")
+	console.log(weekdays)
+	var times = req.body.times.slice(1, req.body.times.length - 1).split(", ")
+	console.log(times)
+	//split to make it an array
 	var db = req.app.locals.db;
-	db.getUser(req.headers.mongoid, function (err, doc) {
-		if (err) res.send({
-			status: false
-		})
-		else {
-			doc.prescriptions.push({
+	db.getUserData(req.headers.mongoid, function (err, doc) {
+		if (err) {
+			res.send({
+				status: false
+			})
+			return
+
+		} else {
+			doc['prescriptions'].push({
 				name: req.body.medicine,
 				dosage: 0
 			})
-			for(var i in req.body.weekdays){
-				for(var j in req.body.times){
+			for (var i in weekdays) {
+				for (var j in times) {
+					var schedTimes = doc['scheduled_medications'][weekdays[i].toString()];
+					var done = false;
+					for (var k in schedTimes) {
+						if (schedTimes[k].time == times[j]) {
+							//console.log(schedTimes[k])
+							schedTimes[k].medication.push({
+								name: req.body.medicine,
+								times_missed: 0,
+								"latest_time_missed": "1970-01-01T00:00:00Z"
+							})
+							done = true;
+							break;
+						}
+					}
 					//check if the time already exists
 					//if yes update the array
 					//if not create new one
-					doc['scheduled_medications'][req.body.weekdays[i]].push({
-						time: req.body.times[j],
-						medication:[
-							{
-								name:req.body.medicine,
-								times_missed : 0,
+					if (!done) {
+						console.log(i);
+						console.log(weekdays[i].toString())
+						doc['scheduled_medications'][weekdays[i].toString()].push({
+							time: times[j],
+							medication: [{
+								name: req.body.medicine,
+								times_missed: 0,
 								"latest_time_missed": "1970-01-01T00:00:00Z"
-							}
-						]
-					})
+							}]
+						})
+					}
 				}
 			}
 
+			//console.log(JSON.stringify(doc));
+
+			delete doc['_id'];
+			db.updateUserRecord(req.headers.mongoid, doc, function (err) {
+				if (!err) {
+					res.send({
+						status: true
+					})
+				} else {
+					res.send({
+						status: false
+					})
+				}
+			})
+
+
+
+
 			//do the database update call on doc
+
+
+
+		}
+
+
+	})
+
+})
+
+router.post('/forget', function (req, res, next) {
+	console.log(req.body)
+	var db = req.app.locals.db;
+	db.getUser(req.headers.mongoid, function (err, doc) {
+		if (err) {
+			res.send({
+				status: false
+			})
+			return
+
+		} else {
+			var schedTimes = doc['scheduled_medications'][req.body.day];
+			for (var i in schedTimes) {
+				if (schedTimes[i].time === req.body.time) {
+					for (var j in schedTimes[i].medication) {
+						if (schedTimes[i].medication[j].name.toLowerCase() === req.body.medicine.toLowerCase()) {
+							schedTimes[i].medication[j]['times_missed'] += 1;
+							schedTimes[i].medication[j]['latest_time_missed'] = req.body.timestamp;
+							//update the document
+							console.log(doc)
+							res.send({
+								status: true
+							})
+							return
+						}
+					}
+				}
+			}
+
+			res.send({
+				status: false
+			})
+
+
+
+
 
 		}
 	})
-	res.send({
-		status: true
-	})
-
 })
 
 router.get('/getReminders', function (req, res, next) {
@@ -142,7 +226,7 @@ router.get('/nextReminder', function (req, res, next) {
 		}
 		console.log("Reminders")
 		var day = currDate.getDay();
-		var currTime = currDate.getHours() * 100 + currDate.getMinutes;
+		var currTime = currDate.getHours() * 100 + currDate.getMinutes();
 		var medications = reminders[day];
 		medications.sort(function (a, b) {
 			return a.time - b.time

@@ -116,3 +116,15 @@ exports.getMedicationForDay = function (id, callBack) {
         }
     })
 }
+
+exports.updateUserRecord = function(id, record, callBack){
+    console.log("Updating");
+    console.log(JSON.stringify(record))
+    db.collection("users").replaceOne({
+    _id:new mongodb.ObjectID(id)}, record, function(err,result){
+            if(!err) callBack(false)
+            else callBack(true)
+
+
+    })
+}

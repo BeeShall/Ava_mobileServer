@@ -67,7 +67,7 @@ exports.checkLabel = function (labels, labelsListFile, callback) {
     }
     for (var i in tokens) {
       for (drug in drugs) {
-        var distance = checkDistance(tokens[i].toUpperCase(), drug);
+        var distance = lDistance.getLDistance(tokens[i].toUpperCase(), drug);
         if (distance < best.distance) {
           best.key = drug;
           best.distance = distance
