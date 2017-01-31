@@ -1,5 +1,6 @@
 var Vision = require('@google-cloud/vision');
 var request = require('request');
+var lDistance = require('./procedureLookup.js')
 var fs = require('fs');
 
 //var vision = Vision()
@@ -16,8 +17,8 @@ function detectLabels(inputFile, callback) {
 
   req = new vision.Request({
     image: new vision.Image({
-    base64: inputFile
-  }),
+      base64: inputFile
+    }),
     features: [
       new vision.Feature('TEXT_DETECTION', 10),
     ]
@@ -26,8 +27,9 @@ function detectLabels(inputFile, callback) {
   // send single request
   vision.annotate(req).then((res) => {
     // handling response
-    callback(null,res.responses[0].textAnnotations)
+    callback(null, res.responses[0].textAnnotations)
   }, (e) => {
+
     callback(e);
   })
 
@@ -38,14 +40,20 @@ exports.getLabels = function (inputFile, callback) {
     if (err) {
       return callback(err);
     }
-    callback(null, labels[0].description);
+    if (labels) {
+      callback(null, labels[0].description);
+    } else {
+      callback("Invalid Image")
+    }
   });
 }
 
 exports.checkLabel = function (labels, labelsListFile, callback) {
   fs.readFile(labelsListFile, 'utf8', function (err, data) {
     if (err) {
-      return console.log(err);
+      console.log("checking labels")
+      console.log(err);
+      callback(true)
     }
     drugs = JSON.parse(data);
     var tokens = labels.split('\n')
@@ -53,6 +61,22 @@ exports.checkLabel = function (labels, labelsListFile, callback) {
     for (var i in tokens) {
       if (drugs[tokens[i].toUpperCase()]) return callback(false, tokens[i])
     }
+    var best = {
+      key: '',
+      distance: 10000000000
+    }
+    for (var i in tokens) {
+      for (drug in drugs) {
+        var distance = checkDistance(tokens[i].toUpperCase(), drug);
+        if (distance < best.distance) {
+          best.key = drug;
+          best.distance = distance
+        }
+      }
+    }
+
+    if(best.key) return callback(false, best.key)
+
     return callback(true);
   });
 }

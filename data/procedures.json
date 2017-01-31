@@ -1,0 +1,12 @@
+
+{
+	"heart attack": "Heart attack? Call 911 immediately.\nIf the person is unconscious, being CPR or chest compressions immediately (100 per min).\nIt an AED is on hand, prepare is while performing CPR and proceed to use it.",
+	"stroke" : "Stroke? Call 911 immediately. Time is everything in this situation.",
+	"breathing" : "Trouble breathing? Call 911 immediately.\nAsk the person for emergency allergy medication if available.  Lie the person flat on their back and loosen tight clothing. If they are not breathing, administer CPR or chest compressions (100 per min).",
+	"trouble breathing" : "Trouble breathing? Call 911 immediately.\nAsk the person for emergency allergy medication if available.  Lie the person flat on their back and loosen tight clothing. If they are not breathing, administer CPR or chest compressions (100 per min).",
+	"anaphylaxis" : "Trouble breathing? Call 911 immediately.\nAsk the person for emergency allergy medication if available.  Lie the person flat on their back and loosen tight clothing. If they are not breathing, administer CPR or chest compressions (100 per min).",
+	"burn" : "Burn?  Call 911 immediately.\nRemove further threat of burns. Check for signs of circulation. Remove any restrictive items such as belts or jewelry. DO NOT put cool water on a serious burn! Elevate and cover the burned area.",
+	"burns" : "Burn?  Call 911 immediately.\nRemove further threat of burns. Check for signs of circulation. Remove any restrictive items such as belts or jewelry. DO NOT put cool water on a serious burn! Elevate and cover the burned area.",
+	"choke" : "Choking?  Call 911 immediately.\nContinually administer 5 back blows and 5 abdominal thrusts until the object is dislodged.",
+	"choking" : "Choking?  Call 911 immediately.\nContinually administer 5 back blows and 5 abdominal thrusts until the object is dislodged."
+}

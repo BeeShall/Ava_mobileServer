@@ -1,12 +1,11 @@
 var bcrypt = require("bcryptjs");
 var LocalStrategy = require('passport-local').Strategy;
 
-exports.createUser = function (db, user, pass, role, callBack) {
+exports.createUser = function (db, user, callBack) {
     console.log(user)
-    console.log(pass)
     bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(pass, salt, function (err, hash) {
-            db.createUser(user, hash, role, callBack);
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            db.createUser(user, hash, callBack);
         })
     })
 }
