@@ -89,6 +89,15 @@ router.post('/addMedication', function (req, res, next) {
 			return
 
 		} else {
+			//check if the medicine already exists
+			for(var i in doc['prescriptions']){
+				if(doc['prescriptions'][i].name == req.body.medicine){
+					res.send({status:false})
+					return;
+				}
+			}
+
+
 			doc['prescriptions'].push({
 				name: req.body.medicine,
 				dosage: 0
@@ -243,6 +252,7 @@ router.get('/nextReminder', function (req, res, next) {
 					returnMeds.push(meds[j].name)
 				}
 				res.send({
+					status:true,
 					day: day,
 					time: medications[i].time,
 					medications: returnMeds
@@ -271,6 +281,7 @@ router.get('/nextReminder', function (req, res, next) {
 				}
 
 				res.send({
+					status:true,
 					day: day,
 					time: medications[0].time,
 					medications: returnMeds

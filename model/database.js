@@ -23,8 +23,8 @@ exports.createUser = function (user, password, callBack) {
         "prescriptions": [],
         "lastName": user.lName,
         "contacts": [{
-            name:user.eName,
-            number:user.ePhone
+            name: user.eName,
+            number: user.ePhone
         }],
         "scheduled_medications": {
             "0": [],
@@ -64,16 +64,15 @@ exports.getUser = function (username, callBack) {
     })
 }
 
-exports.getUserData = function(id, callBack){
+exports.getUserData = function (id, callBack) {
     cursor = db.collection("users").find({
         "_id": new mongodb.ObjectID(id)
     });
-    cursor.nextObject(function(err,doc){
-        if(err){
+    cursor.nextObject(function (err, doc) {
+        if (err) {
             console.log(err)
             callBack(true)
-        }
-        else{
+        } else {
             callBack(false, doc)
         }
     })
@@ -117,13 +116,14 @@ exports.getMedicationForDay = function (id, callBack) {
     })
 }
 
-exports.updateUserRecord = function(id, record, callBack){
+exports.updateUserRecord = function (id, record, callBack) {
     console.log("Updating");
     console.log(JSON.stringify(record))
     db.collection("users").replaceOne({
-    _id:new mongodb.ObjectID(id)}, record, function(err,result){
-            if(!err) callBack(false)
-            else callBack(true)
+        _id: new mongodb.ObjectID(id)
+    }, record, function (err, result) {
+        if (!err) callBack(false)
+        else callBack(true)
 
 
     })
