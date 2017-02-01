@@ -222,10 +222,10 @@ router.get('/getReminders', function (req, res, next) {
 })
 
 
-router.get('/nextReminder', function (req, res, next) {
+router.post('/nextReminder', function (req, res, next) {
 
 	var db = req.app.locals.db;
-	var currDate = new Date();
+	var currDate = new Date(req.body.timestamp);
 	db.getMedicationForDay(req.headers.mongoid, function (err, reminders) {
 		if (err) {
 			console.log("Error");
